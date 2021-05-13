@@ -11,6 +11,7 @@
 #include "ulp_riscv/ulp_riscv.h"
 
 #include "soc/rtc_io_reg.h"
+#include "soc/sens_reg.h"
 
 #include "ulp_gpio.h"
 
@@ -64,6 +65,7 @@ static inline void ulp_gpio_output_disable(int pin)
 
 void ulp_gpio_init(int pin)
 {
+    SET_PERI_REG_MASK(SENS_SAR_IO_MUX_CONF_REG, SENS_IOMUX_CLK_GATE_EN);
     SET_PERI_REG_MASK(RTC_IO_TOUCH_PAD0_REG + pin * 4, RTC_IO_TOUCH_PAD0_MUX_SEL);
     REG_SET_FIELD(RTC_IO_TOUCH_PAD0_REG + pin * 4, RTC_IO_TOUCH_PAD0_FUN_SEL, 0);
 }

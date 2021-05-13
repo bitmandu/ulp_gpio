@@ -1,7 +1,7 @@
 /**
  * @file ulp_gpio.h
  *
- * RTC GPIO support on the ULP-RISC-V. This API attempts to duplicate
+ * RTC GPIO support on the ULP-RISC-V. This API attempts to mirror the
  * driver/rtc_io.h API, but operate on the ULP-RISC-V.
  *
  * @see https://docs.espressif.com/projects/esp-idf/en/latest/esp32s2/api-reference/peripherals/gpio.html
@@ -10,6 +10,8 @@
  */
 
 #pragma once
+
+#include "soc/rtc_io_reg.h"
 
 typedef enum { ULP_GPIO_OUTPUT_NORMAL, ULP_GPIO_OUTPUT_OD } ulp_gpio_out_mode_t;
 
@@ -34,6 +36,7 @@ typedef enum {
  * Initialize RTC GPIO.
  *
  * @param pin RTC GPIO pin number
+ * @see rtcio_ll_function_select() in components/hal/esp32s2/include/hal/rtc_io_ll.h
  */
 void ulp_gpio_init(int pin);
 
@@ -91,7 +94,7 @@ static inline void ulp_gpio_set_level(int pin, uint32_t level)
  */
 static inline uint32_t ulp_gpio_get_level(int pin)
 {
-    return (REG_GET_FIELD(RTC_GPIO_IN_REG, RTC_GPIO_IN_NEXT) >> pin) & 0x01;
+    return (REG_GET_FIELD(RTC_GPIO_IN_REG, RTC_GPIO_IN_NEXT) >> pin) & 0x1;
 }
 
 /**
